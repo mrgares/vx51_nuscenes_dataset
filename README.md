@@ -4,15 +4,14 @@
 
 ```mermaid
 graph TD
-    %% FiftyOne server setup
-    subgraph FiftyOne_Server_Container
-        A1[FiftyOne App]
-        A2[MongoDB Database]
+    subgraph Dataset Containers
+        A1[FiftyOne container]
+        A2[MongoDB container]
         A1 --> A2
     end
 
-    %% Other containers
-    subgraph Other_Containers
+    
+    subgraph Other Containers
         B1[3DGS Container]
         B2[DrivingForward Container]
         B3[Diffusion Model Container]
