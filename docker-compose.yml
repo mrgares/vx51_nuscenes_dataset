@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  nuscenes_mongo_db:
+    image: mongo:5.0
+    container_name: nuscenes_mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - /datastore:/datastore
+    networks:
+      - dggs_network
+    restart: unless-stopped
+
+  fiftyone_worker:
+    build:
+      context: ./fiftyone_worker  # Assumes a subfolder with a Dockerfile for this container
+    container_name: fiftyone_worker
+    environment:
+      - FIFTYONE_DATABASE_URI=mongodb://nuscenes_mongo_db:27017
+      - FIFTYONE_DATASET_ZOO_DIR=/datastore/fiftyone
+
+    volumes:
+      - /datastore/fiftyone/:/fiftyone
+      - /datastore:/datastore
+      - ./fiftyone_worker:/workspace
+    networks:
+      - dggs_network
+    stdin_open: true
+    tty: true
+
+networks:
+  dggs_network:
+    external: true
