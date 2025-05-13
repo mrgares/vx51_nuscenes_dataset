@@ -1,0 +1,3 @@
+nuscenes-devkit
+open3d
+numpy<2

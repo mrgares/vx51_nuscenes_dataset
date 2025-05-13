@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     tree \
     ca-certificates \
     locales \
+    libgl1 \
+    libgomp1 \
+    libglib2.0-0 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set bash as the default shell
@@ -28,6 +31,10 @@ RUN pip install --no-cache-dir fiftyone
 RUN fiftyone plugins download \
     https://github.com/voxel51/fiftyone-plugins \
     --plugin-names @voxel51/plugins
+
+# Install additional Python packages
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Custom prompt and colored ls alias
 RUN echo "PS1='\\[\\033[1;36m\\]\\u\\[\\033[1;31m\\]@\\[\\033[1;32m\\]\\h:\\[\\033[1;35m\\]\\w\\[\\033[1;31m\\]\\$\\[\\033[0m\\] '" >> /root/.bashrc && \
